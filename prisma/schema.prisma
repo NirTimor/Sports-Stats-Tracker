@@ -1,0 +1,194 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  teams     Team[]
+  players   Player[]
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  sport       Sport
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  players     Player[]
+  homeMatches Match[]  @relation("HomeTeam")
+  awayMatches Match[]  @relation("AwayTeam")
+  teamStats   TeamStat[]
+
+  @@index([userId])
+  @@index([sport])
+  @@unique([name, userId, sport])
+}
+
+model Player {
+  id        String   @id @default(cuid())
+  name      String
+  position  String?
+  number    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teamId    String?
+  team      Team?    @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  stats     Stat[]
+  isActive  Boolean  @default(true)
+
+  @@index([userId])
+  @@index([teamId])
+  @@unique([name, userId, teamId])
+}
+
+model Match {
+  id          String   @id @default(cuid())
+  date        DateTime
+  homeTeamId  String
+  homeTeam    Team     @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: Cascade)
+  awayTeamId  String
+  awayTeam    Team     @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: Cascade)
+  location    String?
+  homeScore   Int?
+  awayScore   Int?
+  status      MatchStatus @default(SCHEDULED)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  stats       Stat[]
+  teamStats   TeamStat[]
+
+  @@index([homeTeamId])
+  @@index([awayTeamId])
+  @@index([date])
+  @@unique([homeTeamId, awayTeamId, date])
+}
+
+model Stat {
+  id        String   @id @default(cuid())
+  type      StatType
+  value     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  playerId  String
+  player    Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@index([playerId])
+  @@index([matchId])
+  @@index([type])
+  @@unique([playerId, matchId, type])
+}
+
+model TeamStat {
+  id        String   @id @default(cuid())
+  type      TeamStatType
+  value     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  matchId   String
+  match     Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  @@index([teamId])
+  @@index([matchId])
+  @@index([type])
+  @@unique([teamId, matchId, type])
+}
+
+enum Sport {
+  SOCCER
+  BASKETBALL
+  TENNIS
+}
+
+enum MatchStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum StatType {
+  // Soccer stats
+  GOALS
+  ASSISTS
+  SHOTS
+  SHOTS_ON_TARGET
+  PASSES
+  PASS_ACCURACY
+  TACKLES
+  FOULS
+  YELLOW_CARDS
+  RED_CARDS
+
+  // Basketball stats
+  POINTS
+  REBOUNDS
+  ASSISTS_BASKETBALL
+  STEALS
+  BLOCKS
+  TURNOVERS
+  THREE_POINTERS
+  FREE_THROWS
+  FIELD_GOALS
+
+  // Tennis stats
+  ACES
+  DOUBLE_FAULTS
+  FIRST_SERVES
+  FIRST_SERVE_PERCENTAGE
+  WINNERS
+  UNFORCED_ERRORS
+  BREAK_POINTS_WON
+  BREAK_POINTS_SAVED
+}
+
+enum TeamStatType {
+  // Soccer team stats
+  POSSESSION
+  CORNERS
+  OFFSIDES
+  CLEAN_SHEETS
+  GOALS_CONCEDED
+  GOALS_SCORED
+
+  // Basketball team stats
+  TEAM_POINTS
+  TEAM_REBOUNDS
+  TEAM_ASSISTS
+  TEAM_STEALS
+  TEAM_BLOCKS
+  TEAM_TURNOVERS
+  TEAM_FOULS
+  THREE_POINTERS_MADE
+  FREE_THROWS_MADE
+
+  // Tennis team stats (for doubles)
+  TEAM_ACES
+  TEAM_DOUBLE_FAULTS
+  TEAM_WINNERS
+  TEAM_UNFORCED_ERRORS
+  TEAM_BREAK_POINTS_WON
+}
