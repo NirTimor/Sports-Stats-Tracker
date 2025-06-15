@@ -16,10 +16,10 @@ export default function Home() {
         <div className="mt-10">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {/* Soccer Card */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="bg-blue-800 overflow-hidden shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-gray-900">Soccer</h3>
-                <p className="mt-1 text-sm text-gray-500">
+                <h3 className="text-lg font-medium text-white">Soccer</h3>
+                <p className="mt-1 text-sm text-white">
                   Track goals, assists, and team performance
                 </p>
                 <div className="mt-4">
@@ -34,10 +34,10 @@ export default function Home() {
             </div>
 
             {/* Basketball Card */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="bg-orange-800 overflow-hidden shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-gray-900">Basketball</h3>
-                <p className="mt-1 text-sm text-gray-500">
+                <h3 className="text-lg font-medium text-white">Basketball</h3>
+                <p className="mt-1 text-sm text-white">
                   Monitor points, rebounds, and assists
                 </p>
                 <div className="mt-4">
@@ -52,10 +52,10 @@ export default function Home() {
             </div>
 
             {/* Tennis Card */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="bg-green-800 overflow-hidden shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium text-gray-900">Tennis</h3>
-                <p className="mt-1 text-sm text-gray-500">
+                <h3 className="text-lg font-medium text-white">Tennis</h3>
+                <p className="mt-1 text-sm text-white">
                   Record aces, double faults, and match results
                 </p>
                 <div className="mt-4">

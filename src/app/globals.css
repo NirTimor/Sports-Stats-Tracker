@@ -18,7 +18,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #121212;
+    --background: #30203b;
     --foreground: #f0f0f0;
     --input-bg: #1e1e1e;
     --input-text: #f0f0f0;
@@ -55,4 +55,11 @@ button {
 
 button:hover {
   background-color: #444;
+}
+
+.text-xl {
+  color: #000000;
+}
+.main-titlee {
+  color:#410602;
 }
