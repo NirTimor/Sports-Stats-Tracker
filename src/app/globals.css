@@ -60,6 +60,21 @@ button:hover {
 .text-xl {
   color: #000000;
 }
+
 .main-titlee {
-  color:#410602;
+  color: #410602;
+}
+
+.passion-text {
+  background: linear-gradient(to right, #ff8a00, #e52e71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+}
+
+.passion-text:hover {
+  text-shadow: 0 0 10px rgba(255, 138, 0, 0.5), 0 0 20px rgba(229, 46, 113, 0.5);
+  transform: scale(1.1);
 }
